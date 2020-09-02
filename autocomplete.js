@@ -226,7 +226,7 @@
        * Automatically move scroll bar if selected item is not visible
        */
       function updateScroll() {
-          var elements = container.getElementsByClassName("selected");
+          var elements = container.getElementsByClassName(settings.selectedClassName ? settings.selectedClassName : "selected");
           if (elements.length > 0) {
               var element = elements[0];
               // make group visible

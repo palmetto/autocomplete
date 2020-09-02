@@ -323,7 +323,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
      * Automatically move scroll bar if selected item is not visible
      */
     function updateScroll(): void {
-        const elements = container.getElementsByClassName("selected");
+        const elements = container.getElementsByClassName(settings.selectedClassName ? settings.selectedClassName : "selected");
         if (elements.length > 0) {
             let element = elements[0] as HTMLDivElement;
             
