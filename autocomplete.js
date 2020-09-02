@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.autocomplete = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
   /*
    * https://github.com/kraaden/autocomplete
@@ -34,7 +34,7 @@
           throw new Error("input undefined");
       }
       var input = settings.input;
-      container.className = "autocomplete " + (settings.className || "");
+      container.className = settings.className ? settings.className : "autocomplete";
       // IOS implementation for fixed positioning has many bugs, so we will use absolute positioning
       containerStyle.position = "absolute";
       /**
@@ -163,7 +163,7 @@
                       ev.stopPropagation();
                   });
                   if (item === selected) {
-                      div.className += " selected";
+                      div.className += settings.selectedClassName ? settings.selectedClassName : " selected";
                   }
                   fragment.appendChild(div);
               }
@@ -219,11 +219,14 @@
           }
           startFetch(0 /* Keyboard */);
       }
+      function pasteEventHandler(ev) {
+          requestAnimationFrame(function () { return startFetch(0 /* Keyboard */); });
+      }
       /**
        * Automatically move scroll bar if selected item is not visible
        */
       function updateScroll() {
-          var elements = container.getElementsByClassName("selected");
+          var elements = container.getElementsByClassName(settings.selectedClassName ? settings.selectedClassName : "selected");
           if (elements.length > 0) {
               var element = elements[0];
               // make group visible
@@ -370,6 +373,7 @@
           input.removeEventListener("focus", focusEventHandler);
           input.removeEventListener("keydown", keydownEventHandler);
           input.removeEventListener(keyUpEventName, keyupEventHandler);
+          input.removeEventListener("paste", pasteEventHandler);
           input.removeEventListener("blur", blurEventHandler);
           window.removeEventListener("resize", resizeEventHandler);
           doc.removeEventListener("scroll", scrollEventHandler, true);
@@ -379,6 +383,7 @@
       // setup event handlers
       input.addEventListener("keydown", keydownEventHandler);
       input.addEventListener(keyUpEventName, keyupEventHandler);
+      input.addEventListener("paste", pasteEventHandler);
       input.addEventListener("blur", blurEventHandler);
       input.addEventListener("focus", focusEventHandler);
       window.addEventListener("resize", resizeEventHandler);
@@ -390,5 +395,5 @@
 
   return autocomplete;
 
-}));
+})));
 //# sourceMappingURL=autocomplete.js.map
