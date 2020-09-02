@@ -19,6 +19,7 @@ export interface AutocompleteSettings<T extends AutocompleteItem> {
     render?: (item: T, currentValue: string) => HTMLDivElement | undefined;
     renderGroup?: (name: string, currentValue: string) => HTMLDivElement | undefined;
     className?: string;
+    selectedClassName?: string;
     minLength?: number;
     emptyMsg?: string;
     onSelect: (item: T, input: HTMLInputElement) => void;
@@ -96,7 +97,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
 
     const input: HTMLInputElement = settings.input;
 
-    container.className = "autocomplete " + (settings.className || "");
+    container.className = settings.className ? settings.className : "autocomplete ";
 
     // IOS implementation for fixed positioning has many bugs, so we will use absolute positioning
     containerStyle.position = "absolute";
@@ -250,7 +251,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
                     ev.stopPropagation();
                 });
                 if (item === selected) {
-                    div.className += " selected";
+                    div.className += settings.selectedClassName ? settings.selectedClassName : " selected";
                 }
                 fragment.appendChild(div);
             }
@@ -312,6 +313,10 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
         }
 
         startFetch(EventTrigger.Keyboard);
+    }
+
+    function pasteEventHandler(ev: ClipboardEvent): void {
+        requestAnimationFrame(() => startFetch(EventTrigger.Keyboard));
     }
 
     /**
@@ -478,6 +483,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
         input.removeEventListener("focus", focusEventHandler);
         input.removeEventListener("keydown", keydownEventHandler);
         input.removeEventListener(keyUpEventName, keyupEventHandler as EventListenerOrEventListenerObject);
+        input.removeEventListener("paste", pasteEventHandler);
         input.removeEventListener("blur", blurEventHandler);
         window.removeEventListener("resize", resizeEventHandler);
         doc.removeEventListener("scroll", scrollEventHandler, true);
@@ -488,6 +494,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
     // setup event handlers
     input.addEventListener("keydown", keydownEventHandler);
     input.addEventListener(keyUpEventName, keyupEventHandler as EventListenerOrEventListenerObject);
+    input.addEventListener("paste", pasteEventHandler);
     input.addEventListener("blur", blurEventHandler);
     input.addEventListener("focus", focusEventHandler);
     window.addEventListener("resize", resizeEventHandler);

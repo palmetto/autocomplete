@@ -11,6 +11,7 @@ export interface AutocompleteSettings<T extends AutocompleteItem> {
     render?: (item: T, currentValue: string) => HTMLDivElement | undefined;
     renderGroup?: (name: string, currentValue: string) => HTMLDivElement | undefined;
     className?: string;
+    selectedClassName?: string;
     minLength?: number;
     emptyMsg?: string;
     onSelect: (item: T, input: HTMLInputElement) => void;
