@@ -34,7 +34,7 @@
           throw new Error("input undefined");
       }
       var input = settings.input;
-      container.className = settings.className ? settings.className : "autocomplete ";
+      container.className = settings.className ? settings.className : "autocomplete";
       // IOS implementation for fixed positioning has many bugs, so we will use absolute positioning
       containerStyle.position = "absolute";
       /**
