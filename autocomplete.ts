@@ -214,6 +214,7 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
         let render = function(item: T, currentValue: string): HTMLDivElement | undefined {
             const itemElement = doc.createElement("div");
             itemElement.textContent = item.label || "";
+            itemElement.title = item.label || "";
             return itemElement;
         };
         if (settings.render) {
