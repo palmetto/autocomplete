@@ -78,6 +78,9 @@
           inputValue = "";
           selected = undefined;
           detach();
+          if (settings.onClose) {
+              settings.onClose();
+          }
       }
       /**
        * Update autocomplete position
@@ -129,6 +132,7 @@
           var render = function (item, currentValue) {
               var itemElement = doc.createElement("div");
               itemElement.textContent = item.label || "";
+              itemElement.title = item.label || "";
               return itemElement;
           };
           if (settings.render) {
@@ -338,6 +342,9 @@
                           inputValue = val;
                           selected = items.length > 0 ? items[0] : undefined;
                           update();
+                          if (settings.onOpen && items.length > 0) {
+                              settings.onOpen();
+                          }
                       }
                   }, 0 /* Keyboard */);
               }, trigger === 0 /* Keyboard */ ? debounceWaitMs : 0);
