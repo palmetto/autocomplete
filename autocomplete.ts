@@ -37,6 +37,8 @@ export interface AutocompleteSettings<T extends AutocompleteItem> {
      * @param {number} maxHeight - max height that can be used by autocomplete
      */
     customize?: (input: HTMLInputElement, inputRect: ClientRect | DOMRect, container: HTMLDivElement, maxHeight: number) => void;
+    onOpen?: () => void;
+    onClose?: () => void;
     /**
      * Prevents automatic form submit when ENTER is pressed
      */
@@ -148,6 +150,9 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
         inputValue = "";
         selected = undefined;
         detach();
+        if (settings.onClose) {
+            settings.onClose();
+        }
     }
 
     /**
@@ -446,6 +451,9 @@ export default function autocomplete<T extends AutocompleteItem>(settings: Autoc
                         inputValue = val;
                         selected = items.length > 0 ? items[0] : undefined;
                         update();
+                        if (settings.onOpen && items.length > 0) {
+                            settings.onOpen();
+                        }
                     }
                 }, EventTrigger.Keyboard);
             }, trigger === EventTrigger.Keyboard ? debounceWaitMs : 0);

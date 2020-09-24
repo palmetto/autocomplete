@@ -116,6 +116,8 @@ You can pass the following options to `autocomplete`:
 |`fetch`|This method will be called to prepare suggestions and then pass them to autocomplete. The first parameter is the text in the input field. The second parameter is a callback function that must be called after suggestions are prepared with an array as parameter. If you pass `false` to the callback function, autocomplete will show previous suggestions and will not re-render.|`-`|
 |`debounceWaitMs`|Enforces that the `fetch` function will only be called once within the specified time frame (in milliseconds) and delays execution. This prevents flooding your server with AJAX requests.|`0`|
 |`customize`|Callback for additional autocomplete customization after rendering is finished. Use this function if you want to change autocomplete default position.|`undefined`|
+|`onOpen`|Callback executed when the dropdown is newly rendered.|`undefined`|
+|`onClose`|Callback executed when the dropdown is destroyed.|`undefined`|
 |`preventSubmit`|Prevents automatic form submit when ENTER is pressed.|`false`|
 |`showOnFocus`|Displays suggestions on focus of the input element. Note that if `true`, the minLength property will be ignored and it will always call `fetch`.|`false`|
 
@@ -147,6 +149,12 @@ autocomplete({
     },
     debounceWaitMs: 200,
     customize: function(input, inputRect, container, maxHeight) {
+        ...
+    },
+    onOpen: function() {
+        ...
+    },
+    onClose: function() {
         ...
     },
     preventSubmit: true
