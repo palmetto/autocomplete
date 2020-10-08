@@ -340,7 +340,7 @@
                       if (keypressCounter === savedKeypressCounter && elements) {
                           items = elements;
                           inputValue = val;
-                          selected = items.length > 0 ? items[0] : undefined;
+                          selected = undefined;
                           update();
                           if (settings.onOpen && items.length > 0) {
                               settings.onOpen();
